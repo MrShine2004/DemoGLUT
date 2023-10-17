@@ -48,8 +48,7 @@ void Light::setSpecular(glm::vec4 color)
     specular = color;
 }
 
-void Light::apply(GLenum LightNumber)
-{
+void Light::apply(GLenum LightNumber) {
     // Применяем параметры источника света с заданным номером
     glLightfv(LightNumber, GL_POSITION, &position[0]);
     glLightfv(LightNumber, GL_AMBIENT, &ambient[0]);

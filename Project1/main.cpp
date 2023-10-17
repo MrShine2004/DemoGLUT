@@ -32,16 +32,13 @@ using namespace std;
 #include <sstream>
 #include <string>
 
-#include <chrono>
-
 Camera camera; // Создание объекта камеры
 
 float FrameTime = 0;
 int FPS = 0;
 
-unsigned int mCurrentTick = 0;
-
-float getSimulationTime();
+float mCurrentTick = 0;
+float Xvec = 0;
 
 // lab5
 
@@ -72,13 +69,29 @@ void display(void)
 	// устанавливаем камеру
 
 	// устанавливаем общую фоновую освещенность
-	GLfloat globalAmbientColor[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat globalAmbientColor[] = {0.0, 0.0, 0.0, 1.0 };
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbientColor);
 
-	// включаем нулевой источник света
-	glEnable(GL_LIGHT0);
+	GLenum light = GL_LIGHT0;
 
-	glLightfv(GL_LIGHT0, GL_POSITION, pos);
+	float sim = getSimulationTime();
+
+	mCurrentTick += sim;
+	Xvec += 0.001;
+	//float anim = std::sin(mCurrentTick * 2.0f);
+	pos[1] = std::sin(Xvec)*100;
+
+
+	//std::cout << "\nANIM: " << anim << " " << pos[0];
+
+	// включаем нулевой источник света
+	glEnable(light);
+
+	glLightfv(light, GL_POSITION, pos);
+	GLfloat c[] = { 0.0, 1.0, 0.0, 1.0 };
+	c[0] = std::abs(std::sin(Xvec));
+	c[2] = std::abs(std::cos(Xvec));
+	glLightfv(light, GL_DIFFUSE, c);
 
 	camera.apply();
 

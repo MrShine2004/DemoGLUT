@@ -1,5 +1,6 @@
 #include "Data.h"
 #include "vector"
+
 // используемые пространства имен
 using namespace glm;
 using namespace std;
@@ -36,7 +37,6 @@ void initData()
 
 float getSimulationTime()
 {
-
 	static LARGE_INTEGER oldtime;
 	LARGE_INTEGER time;
 	QueryPerformanceCounter(&time);
