@@ -92,7 +92,7 @@ void main(int argc, char** argv)
 	// инициализация дисплея (формат вывода)
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 
-	// СОЗДАНИЕ ОКНА:
+	// СОЗДАНИЕ ОКНА:+
 	// 1. устанавливаем верхний левый угол окна
 	glutInitWindowPosition(200, 200);
 	// 2. устанавливаем размер окна
