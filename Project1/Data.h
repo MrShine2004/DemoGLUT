@@ -5,11 +5,16 @@
 #include <glm/glm/glm.hpp>
 #include "Camera.h"
 #include "GraphicObject.h"
+#include "GameObject.h"
+#include "Light.h"
 
 using namespace std;
 
 // список графических объектов
 extern std::vector<GraphicObject> graphicObjects;
+extern std::vector<GameObject> gameObjects;
+extern shared_ptr<GameObject> player;
+extern GraphicObject planeGraphicObject;
 // используемая камера
 extern Camera camera;
 // функция для инициализации всех общих данных (камера, объекты и т.д.)
@@ -42,3 +47,24 @@ extern int color_num;
 extern int FPS;
 
 float getSimulationTime();
+
+// карта проходимости
+extern int passabilityMap[21][21];
+// список игровых объектов расположенных на карте
+extern std::shared_ptr<GameObject> mapObjects[21][21];
+// графический объект для плоскости (частный случай)
+extern GraphicObject planeGraphicObject;
+
+
+extern float FrameTime;
+extern int FPS;
+
+extern float mCurrentTick;
+extern float Xvec;
+// lab5
+extern vec3 pos;
+extern bool direct;
+
+extern Light light;
+
+extern Camera camera; // Создание объекта камеры

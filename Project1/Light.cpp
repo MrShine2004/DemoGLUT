@@ -5,8 +5,8 @@ Light::Light()
 {
     // »нициализируем параметры по умолчанию
     position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-    diffuse = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f);
+    ambient = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
     specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
@@ -49,6 +49,8 @@ void Light::setSpecular(glm::vec4 color)
 }
 
 void Light::apply(GLenum LightNumber) {
+    // включаем нулевой источник света
+    glEnable(LightNumber);
     // ѕримен€ем параметры источника света с заданным номером
     glLightfv(LightNumber, GL_POSITION, &position[0]);
     glLightfv(LightNumber, GL_AMBIENT, &ambient[0]);

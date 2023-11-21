@@ -13,6 +13,14 @@
 #include <glm/glm/glm.hpp>
 #include <glm/glm/gtc/matrix_transform.hpp>
 #include <glm/glm/gtc/type_ptr.hpp>
+
+#include "PhongMaterial.h"
+
+#include "Mesh.h"
+
+#include <sstream>
+
+
 using namespace glm;
 
 class GraphicObject
@@ -32,6 +40,12 @@ public:
 	// Установка текущего цвета объекта
 	void setСolor(vec3 color);
 	vec3 getColor();
+
+	// Установка используемого материала
+	void setMaterial(std::shared_ptr<PhongMaterial> material);
+	// Установка используемого меша
+	void setMesh(std::shared_ptr<Mesh> mesh);
+
 	// Вывести объект
 	void draw();
 	void printModelMatrix();
@@ -55,6 +69,10 @@ private:
 		0.0, 0.0, -1.0, 0.0, // ось Oz
 		4.0, 0.0, 0.0, 1.0 // позиция объекта (начало системы координат)
 	};
+	// Используемый материал
+	std::shared_ptr<PhongMaterial> material;
+	// Используемый меш
+	std::shared_ptr<Mesh> mesh;
 	// расчет матрицы modelMatrix на основе position и angle
 	void recalculateModelMatrix();
 };

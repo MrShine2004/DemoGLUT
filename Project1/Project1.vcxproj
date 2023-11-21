@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\alexy\Desktop\Univer\3curs\AOCG\Project1\Project1\freeglut\include;$(SolutionDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\alexy\Desktop\Univer\3curs\AOCG\Project1\Project1\freeglut\include;$(SolutionDir)Project1\rapidjson-master\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,11 +139,21 @@
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="PhongMaterial.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectFactory.cpp" />
+    <ClCompile Include="Simulation.cpp" />
+    <ClCompile Include="Display.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Data.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectFactory.h" />
+    <ClInclude Include="Display.h" />
+    <ClInclude Include="Simulation.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="PhongMaterial.h" />
     <ClInclude Include="Light.h" />
   </ItemGroup>

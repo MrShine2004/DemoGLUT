@@ -1,4 +1,8 @@
 #include "PhongMaterial.h"
+#include <sstream>
+
+using namespace std;
+
 
 PhongMaterial::PhongMaterial()
 {
@@ -37,21 +41,52 @@ void PhongMaterial::setShininess(float p)
 
 void PhongMaterial::load(std::string filename)
 {
-    // Реализация загрузки параметров материала из файла
-    // Вам нужно открыть и прочитать файл, а затем установить параметры материала.
-    // Пример:
-
+    // Открываем файл для чтения
     std::ifstream file(filename);
+    if (!file.is_open())
+    {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+        return;
+    }
 
-    // Прочитайте параметры из файла и установите их в соответствии с вашим форматом
+    std::string line;
+    while (std::getline(file, line))
+    {
+        // Разбираем строку и извлекаем параметры
+        std::istringstream lineStream(line);
+        std::string parameter;
+        lineStream >> parameter;
 
-    // Пример чтения параметров:
-    // file >> ambient.x >> ambient.y >> ambient.z >> ambient.w;
-    // file >> diffuse.x >> diffuse.y >> diffuse.z >> diffuse.w;
-    // file >> specular.x >> specular.y >> specular.z >> specular.w;
-    // file >> emission.x >> emission.y >> emission.z >> emission.w;
-    // file >> shininess;
+        if (parameter == "diffuse:")
+        {
+            lineStream >> diffuse[0] >> diffuse[1] >> diffuse[2] >> diffuse[3];
+        }
+        else if (parameter == "ambient:")
+        {
+            lineStream >> ambient.x >> ambient.y >> ambient.z >> ambient.w;
+        }
+        else if (parameter == "specular:")
+        {
+            lineStream >> specular.x >> specular.y >> specular.z >> specular.w;
+        }
+        else if (parameter == "emission:")
+        {
+            lineStream >> emission.x >> emission.y >> emission.z >> emission.w;
+        }
+        else if (parameter == "shininess:")
+        {
+            lineStream >> shininess;
+        }
+    }
+    std::cout << "Material loaded from: " << filename << std::endl;  // Вывод сообщения о загрузке
+    std::cout << "Ambient: " << ambient.x << " " << ambient.y << " " << ambient.z << " " << ambient.w << std::endl;
+    std::cout << "Diffuse: " << diffuse[0] << " " << diffuse[1] << " " << diffuse[2] << " " << diffuse[3] << std::endl;
+    std::cout << "Specular: " << specular.x << " " << specular.y << " " << specular.z << " " << specular.w << std::endl;
+    std::cout << "Emission: " << emission.x << " " << emission.y << " " << emission.z << " " << emission.w << std::endl;
+    std::cout << "Shininess: " << shininess << std::endl;
 }
+
+
 
 void PhongMaterial::apply()
 {
@@ -60,9 +95,9 @@ void PhongMaterial::apply()
     // Используйте параметры материала для настройки свойств отражения света.
     // Например, для OpenGL:
 
-    // glMaterialfv(GL_FRONT, GL_AMBIENT, glm::value_ptr(ambient));
-    // glMaterialfv(GL_FRONT, GL_DIFFUSE, glm::value_ptr(diffuse));
-    // glMaterialfv(GL_FRONT, GL_SPECULAR, glm::value_ptr(specular));
-    // glMaterialfv(GL_FRONT, GL_EMISSION, glm::value_ptr(emission));
-    // glMaterialf(GL_FRONT, GL_SHININESS, shininess);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, glm::value_ptr(ambient));
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, glm::value_ptr(diffuse));
+    glMaterialfv(GL_FRONT, GL_SPECULAR, glm::value_ptr(specular));
+    glMaterialfv(GL_FRONT, GL_EMISSION, glm::value_ptr(emission));
+    glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 }
