@@ -5,9 +5,9 @@ Camera::Camera()
 {
     // Начальные значения для позиции, углов и радиуса
     position = vec3(0.0f, 0.0f, 0.0f);
-    angleX = 20.0f;
-    angleY = 20.0f;
-    r = 20.0f;
+    angleX = 0.0f;
+    angleY = 40.0f;
+    r = 50.0f;
     recalculatePosition();
 }
 
@@ -94,6 +94,8 @@ void Camera::zoomInOut(float distance)
     // Ограничиваем радиус, чтобы он не стал отрицательным
     if (r < 0.0f)
         r = 0.0f;
+    if (r > 60.0f)
+        r = 60.0f;
     // Пересчитываем позицию
     recalculatePosition();
 }

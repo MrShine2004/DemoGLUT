@@ -32,17 +32,13 @@ using namespace std;
 #include <sstream>
 #include <string>
 
-Camera camera; // Создание объекта камеры
 
-float FrameTime = 0;
-int FPS = 0;
+// lab 5
+#include "Light.h"
+#include "PhongMaterial.h"
+#include "Simulation.h"
+#include "Display.h"
 
-float mCurrentTick = 0;
-float Xvec = 0;
-
-// lab5
-
-GLfloat pos[] = {0, 0, 0};
 
 // функция, вызываемая при изменении размеров окна
 void reshape(int w, int h)
@@ -56,85 +52,6 @@ void reshape(int w, int h)
 	gluPerspective(25.0, (float)w / h, 0.2, 70.0);
 };
 
-// функция вызывается при перерисовке окна
-// в том числе и принудительно, по командам glutPostRedisplay
-void display(void)
-{
-	FPS++;
-	// отчищаем буфер цвета и буфер глубины
-	glClearColor(0.00, 0.00, 0.00, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	// включаем тест глубины
-	glEnable(GL_DEPTH_TEST);
-	// устанавливаем камеру
-
-	// устанавливаем общую фоновую освещенность
-	GLfloat globalAmbientColor[] = {0.0, 0.0, 0.0, 1.0 };
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbientColor);
-
-	GLenum light = GL_LIGHT0;
-
-	float sim = getSimulationTime();
-
-	mCurrentTick += sim;
-	Xvec += 0.001;
-	//float anim = std::sin(mCurrentTick * 2.0f);
-	pos[1] = std::sin(Xvec)*100;
-
-
-	//std::cout << "\nANIM: " << anim << " " << pos[0];
-
-	// включаем нулевой источник света
-	glEnable(light);
-
-	glLightfv(light, GL_POSITION, pos);
-	GLfloat c[] = { 0.0, 1.0, 0.0, 1.0 };
-	c[0] = std::abs(std::sin(Xvec));
-	c[2] = std::abs(std::cos(Xvec));
-	glLightfv(light, GL_DIFFUSE, c);
-
-	camera.apply();
-
-	
-	// вывод правого чайника
-	graphicObjects[0].draw();
-	//graphicObjects[0].printModelMatrix();
-	//cin.get();
-	// вывод левого чайника
-	graphicObjects[1].draw();
-	// вывод переднего чайника
-	graphicObjects[2].draw();
-	// вывод заднего чайника
-	graphicObjects[3].draw();
-
-	
-	// смена переднего и заднего буферов
-	glutSwapBuffers();
-};
-// функция симуляции - вызывается максимально часто
-// через заранее неизвестные промежутки времени
-// для чего регистрируется с помощью glutIdleFunc
-void simulation()
-{
-	// определение времени симуляции
-	float simulationTime = getSimulationTime();
-	// передвижение камеры
-	// устанавливаем признак того, что окно нуждается в перерисовке
-	glutPostRedisplay();
-	FrameTime += simulationTime;
-	FPS++;
-	if (FrameTime >= 1) {
-		std::stringstream ss;
-		ss << FPS << " FPS";
-		std::string fpsString = ss.str();
-		cout << "FPS = " << FPS << endl; 
-		glutSetWindowTitle(fpsString.c_str());
-		FPS = 0;
-		FrameTime = 0;
-	}
-};
-
-
 // Функция обработки нажатия клавиш
 void keyboardFunc(unsigned char key, int x, int y)
 {
@@ -143,16 +60,16 @@ void keyboardFunc(unsigned char key, int x, int y)
 	// для провекри класса камеры вызываем методы передвижения
 	switch (static_cast<char>(key)) {
 	case 'w':
-		camera.rotateUpDown(5.0);
+		camera.rotateUpDown(1.0);
 		break;
 	case 's':
-		camera.rotateUpDown(-5.0);
+		camera.rotateUpDown(-1.0);
 		break;
 	case 'a':
-		camera.rotateLeftRight(-5.0);
+		camera.rotateLeftRight(-1.0);
 		break;
 	case 'd':
-		camera.rotateLeftRight(5.0);
+		camera.rotateLeftRight(1.0);
 		break;
 	case '+':
 		camera.zoomInOut(0.2);
@@ -181,35 +98,10 @@ void main(int argc, char** argv)
 	// 2. устанавливаем размер окна
 	glutInitWindowSize(800, 600);
 	// 3. создаем окно
-	glutCreateWindow("Чайник");
-	GraphicObject GraphicObject1;
-	GraphicObject1.setPosition(vec3(4, 0, 0));
-	GraphicObject1.setAngle(180);
-	GraphicObject1.setСolor(vec3(1, 0, 0));
-	graphicObjects.push_back(GraphicObject1);
-
-	GraphicObject GraphicObject2;
-	GraphicObject2.setPosition(vec3(-4, 0, 0));
-	GraphicObject2.setAngle(0);
-	GraphicObject2.setСolor(vec3(0, 0, 1));
-	graphicObjects.push_back(GraphicObject2);
-
-	GraphicObject GraphicObject3;
-	GraphicObject3.setPosition(vec3(0, 0, 4));
-	GraphicObject3.setAngle(90);
-	GraphicObject3.setСolor(vec3(1, 1, 1));
-	graphicObjects.push_back(GraphicObject3);
-
-	GraphicObject GraphicObject4;
-	GraphicObject4.setPosition(vec3(0, 0, -4));
-	GraphicObject4.setAngle(270);
-	GraphicObject4.setСolor(vec3(0, 1, 0));
-	graphicObjects.push_back(GraphicObject4);
-
-
-	// включаем режим расчета освещения
-	glEnable(GL_LIGHTING);
-
+	glutCreateWindow("Окно");
+	
+	initData();
+	light.setPosition(pos);
 
 
 	// УСТАНОВКА ФУНКЦИЙ ОБРАТНОГО ВЫЗОВА

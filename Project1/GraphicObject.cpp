@@ -73,6 +73,15 @@ vec3 GraphicObject::getColor() {
 	return color;
 };
 
+void GraphicObject::setMaterial(std::shared_ptr<PhongMaterial> material) {
+	this->material = material;
+}
+
+void GraphicObject::setMesh(std::shared_ptr<Mesh> mesh)
+{
+	this->mesh = mesh;
+}
+
 void GraphicObject::printModelMatrix() {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -91,11 +100,19 @@ void GraphicObject::recalculateModelMatrix() {
 // ֲûגוסעט מבתוךע
 void GraphicObject::draw() {
 	GraphicObject::recalculateModelMatrix();
-	glPushMatrix();
-	glMultMatrixf(&modelMatrix[0][0]);
-	glColor3f(color[0], color[1], color[2]);
+	if (material != nullptr) {
+		material->apply();
+	}
+	if (mesh != nullptr) {
+		glPushMatrix();
+		glMultMatrixf(&modelMatrix[0][0]);
+		glColor3f(color[0], color[1], color[2]);
+		mesh->draw();
+		glPopMatrix();
+	}
+	/*
 	glutSolidTeapot(1.0);
-	glPopMatrix();
+	*/
 };
 
 
